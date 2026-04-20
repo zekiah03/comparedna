@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Morpho — 万物の分類学
 
-## Getting Started
+存在を、プロファイリングする。あらゆる対象を12軸と環境DNAで解剖し、ジャンルを越えた類似を炙り出す AI 分類学アプリ。
 
-First, run the development server:
+- 12軸 × 60要素 × 7層の多次元プロファイリング
+- AI 比較解説、もしもラボ (改造シミュレーション)
+- 履歴書風の「もし一人の人間なら」
+- Claude Opus 4.7 + adaptive thinking
+
+## ローカル実行
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# → http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`/settings` で Anthropic API キーを登録すると分析が動きます。  
+キーは **ブラウザの localStorage にのみ保存** され、サーバーには永続化されません。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Vercel へのデプロイ
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. このリポジトリを GitHub にプッシュ
+2. [vercel.com](https://vercel.com) で New Project → GitHub リポジトリを選択
+3. Framework Preset: Next.js (自動検出)
+4. Environment Variables (任意):
+   - `ANTHROPIC_API_KEY` — 設定すれば訪問者がキー未登録でもホストのキーで動く。公開デプロイでは**設定しない**ことを推奨 (訪問者が自分のキーを使う)
+5. Deploy
 
-## Learn More
+デフォルトで Vercel Hobby (無料) で動きます。関数タイムアウトは 60 秒。
 
-To learn more about Next.js, take a look at the following resources:
+## データ保存
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+すべてブラウザの localStorage に保存されます。サーバー側のファイル書込はありません。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `morpho:library:v1` — ユーザーが分析した対象
+- `morpho:analogies:v1` — 履歴書キャッシュ
+- `morpho:apiKey:v1` — Anthropic API キー
 
-## Deploy on Vercel
+端末を変えるとデータは持ち越せません (export/import は未実装)。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## スタック
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js 16 (App Router, Turbopack)
+- TypeScript, Tailwind CSS v4
+- Recharts, Framer Motion
+- `@anthropic-ai/sdk` + Zod (structured outputs)
+- Claude Opus 4.7 with adaptive thinking + prompt caching

@@ -36,6 +36,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local data (legacy — superseded by client-side localStorage)
+/data/
+
+# memory notes
+/memory/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
