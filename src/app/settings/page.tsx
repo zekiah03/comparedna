@@ -23,10 +23,9 @@ export default function SettingsPage() {
     if (withTest) setTesting(true); else setSaving(true);
     try {
       if (withTest) {
-        const res = await fetch("/api/analyze", {
+        const res = await fetch("/api/validate-key", {
           method: "POST",
-          headers: { "Content-Type": "application/json", "x-api-key": key },
-          body: JSON.stringify({ target: "テスト" }),
+          headers: { "x-api-key": key },
         });
         if (!res.ok) {
           const body = await res.json().catch(() => ({ error: "HTTP " + res.status }));
@@ -123,7 +122,7 @@ export default function SettingsPage() {
           </button>
         </div>
         <p className="text-[11px] text-[var(--text-muted)] mt-3 leading-relaxed">
-          「テストして保存」は1回の小さなAPI呼び出し(数円以下)でキーを検証してから保存します。
+          「テストして保存」は1トークンだけの軽い呼び出し(数円未満)でキーを検証してから保存します。ライブラリには何も残りません。
         </p>
 
         {msg && (
