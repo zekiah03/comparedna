@@ -68,7 +68,7 @@ export default function Scene({ entries, onHover, onSelect, hoveredId, autoRotat
 
       <OrbitControls
         autoRotate={autoRotate}
-        autoRotateSpeed={1.6}
+        autoRotateSpeed={0.4}
         enableZoom
         enablePan={false}
         minDistance={4}
