@@ -12,6 +12,7 @@ import {
 } from "@/lib/analyze-prompt";
 import type { Entry } from "@/lib/types";
 import { apiErrorBody, apiErrorStatus } from "@/lib/api-error";
+import { isKvConfigured, saveEntry } from "@/lib/kv-storage";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -76,6 +77,11 @@ export async function POST(req: NextRequest) {
     envDNA: envDNA ?? undefined,
     createdAt: new Date().toISOString().slice(0, 10),
   };
+
+  if (isKvConfigured()) {
+    try { await saveEntry(entry); }
+    catch {/* non-fatal: client still receives entry */}
+  }
 
   return NextResponse.json({ entry });
 }

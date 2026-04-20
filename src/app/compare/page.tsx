@@ -9,7 +9,7 @@ import type { AxisKey, Entry, Metrics } from "@/lib/types";
 import { cn, axesSimilarity, axesToVector } from "@/lib/utils";
 import { ratioLabel } from "@/lib/format-metric";
 import type { CompareResult } from "@/lib/compare-schema";
-import { loadLibrary, authHeaders } from "@/lib/client-storage";
+import { authHeaders } from "@/lib/client-storage";
 
 const AXIS_ORDER: AxisKey[] = ["A","B","C","D","E","F","G","H","I","J","K","L"];
 
@@ -25,7 +25,14 @@ function CompareInner() {
   }, [params]);
 
   useEffect(() => {
-    setUserEntries(loadLibrary());
+    (async () => {
+      try {
+        const res = await fetch("/api/library");
+        if (!res.ok) return;
+        const { entries } = await res.json();
+        setUserEntries(entries ?? []);
+      } catch {/* ignore */}
+    })();
   }, []);
 
   const allEntries = useMemo(() => {

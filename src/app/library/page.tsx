@@ -6,7 +6,6 @@ import { EntryCard } from "@/components/entry-card";
 import { TYPE_META } from "@/lib/types";
 import type { Entry, ObjectType } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { loadLibrary } from "@/lib/client-storage";
 
 const CATEGORIES = ["すべて","動物","植物","天体","大地形","微生物","群れ","組織","人工物","概念","状態","現象"];
 
@@ -17,7 +16,14 @@ export default function LibraryPage() {
   const [userEntries, setUserEntries] = useState<Entry[]>([]);
 
   useEffect(() => {
-    setUserEntries(loadLibrary());
+    (async () => {
+      try {
+        const res = await fetch("/api/library");
+        if (!res.ok) return;
+        const { entries } = await res.json();
+        setUserEntries(entries ?? []);
+      } catch {/* ignore */}
+    })();
   }, []);
 
   const allEntries = useMemo(() => [...userEntries, ...SEED_ENTRIES], [userEntries]);

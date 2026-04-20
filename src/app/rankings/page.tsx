@@ -7,7 +7,6 @@ import { AXIS_META, METRIC_LABELS, TYPE_META } from "@/lib/types";
 import type { Axes12, AxisKey, Entry, Metrics } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { formatMetric } from "@/lib/format-metric";
-import { loadLibrary } from "@/lib/client-storage";
 
 type MetricKey = keyof Metrics;
 type Direction = "asc" | "desc";
@@ -28,7 +27,14 @@ export default function RankingsPage() {
   const [direction, setDirection] = useState<Direction>("desc");
 
   useEffect(() => {
-    setUserEntries(loadLibrary());
+    (async () => {
+      try {
+        const res = await fetch("/api/library");
+        if (!res.ok) return;
+        const { entries } = await res.json();
+        setUserEntries(entries ?? []);
+      } catch {/* ignore */}
+    })();
   }, []);
 
   const allEntries = useMemo(() => {

@@ -6,10 +6,25 @@ import { HumanProfileSchema, type HumanProfile } from "@/lib/analogy-schema";
 import { ANALOGY_SYSTEM_PROMPT, analogyUserPrompt } from "@/lib/analogy-prompt";
 import type { Entry } from "@/lib/types";
 import { apiErrorBody, apiErrorStatus } from "@/lib/api-error";
+import { isKvConfigured, loadAnalogy, saveAnalogy } from "@/lib/kv-storage";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
+// GET /api/analogize?id=xxx → 既存キャッシュを返す (なければ null)
+export async function GET(req: NextRequest) {
+  const id = new URL(req.url).searchParams.get("id")?.trim();
+  if (!id) return NextResponse.json({ error: "id が必要" }, { status: 400 });
+  if (!isKvConfigured()) return NextResponse.json({ result: null, cached: false });
+  try {
+    const cached = await loadAnalogy(id);
+    return NextResponse.json({ result: cached, cached: Boolean(cached) });
+  } catch {
+    return NextResponse.json({ result: null, cached: false });
+  }
+}
+
+// POST /api/analogize  body: { entry }  → 新規生成 + KVに保存
 export async function POST(req: NextRequest) {
   let entry: Entry;
   try {
@@ -48,6 +63,11 @@ export async function POST(req: NextRequest) {
     parsed = HumanProfileSchema.parse(JSON.parse(text));
   } catch (e) {
     return NextResponse.json(apiErrorBody(e), { status: apiErrorStatus(e) });
+  }
+
+  if (isKvConfigured()) {
+    try { await saveAnalogy(entry.id, parsed); }
+    catch {/* non-fatal */}
   }
 
   return NextResponse.json({ result: parsed });

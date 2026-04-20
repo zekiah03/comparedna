@@ -9,7 +9,7 @@ import { METRIC_LABELS, TYPE_META } from "@/lib/types";
 import type { Entry, Metrics } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { formatMetric, ratioLabel } from "@/lib/format-metric";
-import { loadLibrary, addToLibrary, authHeaders } from "@/lib/client-storage";
+import { authHeaders } from "@/lib/client-storage";
 
 type ModType = "削除" | "追加" | "強化/弱化" | "環境変更" | "スケール" | "融合" | "反転" | "時間軸";
 
@@ -46,7 +46,14 @@ function LabInner() {
   }, [params]);
 
   useEffect(() => {
-    setAllEntries([...loadLibrary(), ...SEED_ENTRIES]);
+    (async () => {
+      try {
+        const res = await fetch("/api/library");
+        if (!res.ok) { setAllEntries(SEED_ENTRIES); return; }
+        const { entries } = await res.json();
+        setAllEntries([...(entries ?? []), ...SEED_ENTRIES]);
+      } catch { setAllEntries(SEED_ENTRIES); }
+    })();
   }, []);
 
   useEffect(() => {
@@ -75,7 +82,6 @@ function LabInner() {
       }
       const data = (await res.json()) as LabResult;
       setResult(data);
-      addToLibrary(data.entry);
     } catch (e) {
       setError(e instanceof Error ? e.message : "不明なエラー");
     } finally {

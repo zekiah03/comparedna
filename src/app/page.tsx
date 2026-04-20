@@ -6,7 +6,7 @@ import Link from "next/link";
 import { SEED_ENTRIES } from "@/lib/seed-data";
 import { EntryCard } from "@/components/entry-card";
 import type { Entry } from "@/lib/types";
-import { loadLibrary, loadApiKey } from "@/lib/client-storage";
+import { loadApiKey } from "@/lib/client-storage";
 
 export default function Home() {
   const [value, setValue] = useState("");
@@ -15,8 +15,15 @@ export default function Home() {
   const [hasKey, setHasKey] = useState<boolean | null>(null);
 
   useEffect(() => {
-    setUserEntries(loadLibrary());
     setHasKey(Boolean(loadApiKey()));
+    (async () => {
+      try {
+        const res = await fetch("/api/library");
+        if (!res.ok) return;
+        const { entries } = await res.json();
+        setUserEntries(entries ?? []);
+      } catch {/* ignore */}
+    })();
   }, []);
 
   const recent = [...userEntries, ...SEED_ENTRIES].slice(0, 5);

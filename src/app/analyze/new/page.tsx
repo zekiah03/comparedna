@@ -4,7 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { SEED_ENTRIES } from "@/lib/seed-data";
-import { addToLibrary, authHeaders } from "@/lib/client-storage";
+import { authHeaders } from "@/lib/client-storage";
 
 type Status = "seed-redirect" | "analyzing" | "error" | "done";
 
@@ -52,7 +52,6 @@ function NewAnalyzeInner() {
           return;
         }
         const { entry } = await res.json();
-        addToLibrary(entry);
         router.replace(`/analyze/${entry.id}`);
       } catch (e) {
         if (cancelled) return;

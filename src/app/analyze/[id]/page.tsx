@@ -18,12 +18,7 @@ import type {
 import { cn, axesSimilarity, axesToVector } from "@/lib/utils";
 import { formatMetric } from "@/lib/format-metric";
 import type { HumanProfile } from "@/lib/analogy-schema";
-import {
-  loadLibrary, findEntry,
-  removeFromLibrary, updateInLibrary,
-  loadAnalogy, saveAnalogy,
-  authHeaders,
-} from "@/lib/client-storage";
+import { authHeaders } from "@/lib/client-storage";
 
 const AXIS_ORDER: AxisKey[] = ["A","B","C","D","E","F","G","H","I","J","K","L"];
 
@@ -47,13 +42,27 @@ export default function AnalyzePage({ params }: { params: Promise<{ id: string }
 
   useEffect(() => {
     if (entry) return;
-    const found = findEntry(id);
-    if (found) setEntry(found);
-    setLoading(false);
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`/api/entry/${id}`);
+        if (!res.ok) { if (!cancelled) setLoading(false); return; }
+        const { entry: e } = await res.json();
+        if (!cancelled) { setEntry(e); setLoading(false); }
+      } catch { if (!cancelled) setLoading(false); }
+    })();
+    return () => { cancelled = true; };
   }, [id, entry]);
 
   useEffect(() => {
-    setUserEntries(loadLibrary());
+    (async () => {
+      try {
+        const res = await fetch("/api/library");
+        if (!res.ok) return;
+        const { entries } = await res.json();
+        setUserEntries(entries ?? []);
+      } catch {/* ignore */}
+    })();
   }, []);
 
   const similar = useMemo(() => {
@@ -216,11 +225,11 @@ export default function AnalyzePage({ params }: { params: Promise<{ id: string }
                 編集
               </button>
               <button
-                onClick={() => {
+                onClick={async () => {
                   if (!confirm(`「${entry.name}」を削除します。本当に削除しますか?`)) return;
-                  const removed = removeFromLibrary(entry.id);
-                  if (removed) router.push("/library");
-                  else alert("削除に失敗しました (シードエントリは削除できません)");
+                  const res = await fetch(`/api/entry/${entry.id}`, { method: "DELETE" });
+                  if (res.ok) router.push("/library");
+                  else alert("削除に失敗しました");
                 }}
                 className="btn btn-subtle h-9 text-[13px] text-[var(--accent-rose)] hover:bg-[rgba(244,114,182,0.1)]"
                 aria-label="削除"
@@ -264,12 +273,17 @@ function EditModal({
   const [saving, setSaving] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  function save() {
+  async function save() {
     setSaving(true); setErr(null);
     try {
-      const updated = updateInLibrary(entry.id, { name, catchphrase, summary, category });
-      if (!updated) throw new Error("エントリーが見つかりません (シードは編集不可)");
-      onSaved(updated);
+      const res = await fetch(`/api/entry/${entry.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, catchphrase, summary, category }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
+      onSaved(body.entry);
     } catch (e) {
       setErr(e instanceof Error ? e.message : "不明なエラー");
     } finally {
@@ -331,9 +345,18 @@ function AnalogySection({ entry }: { entry: Entry }) {
   const [phase, setPhase] = useState(0);
 
   useEffect(() => {
-    const cached = loadAnalogy(entry.id);
-    if (cached) setResult(cached);
-    setChecked(true);
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`/api/analogize?id=${encodeURIComponent(entry.id)}`);
+        if (res.ok) {
+          const body = await res.json();
+          if (!cancelled && body.result) setResult(body.result);
+        }
+      } catch {/* ignore */}
+      finally { if (!cancelled) setChecked(true); }
+    })();
+    return () => { cancelled = true; };
   }, [entry.id]);
 
   useEffect(() => {
@@ -357,7 +380,6 @@ function AnalogySection({ entry }: { entry: Entry }) {
       }
       const { result } = await res.json();
       setResult(result);
-      saveAnalogy(entry.id, result);
     } catch (e) {
       setError(e instanceof Error ? e.message : "不明なエラー");
     } finally {

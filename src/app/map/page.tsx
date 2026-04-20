@@ -7,7 +7,6 @@ import { TYPE_META } from "@/lib/types";
 import type { Entry, ObjectType } from "@/lib/types";
 import { axesToVector, cn } from "@/lib/utils";
 import { pca2D } from "@/lib/pca";
-import { loadLibrary } from "@/lib/client-storage";
 
 const TYPE_COLORS: Record<ObjectType, string> = {
   T1: "#5EEAD4", // teal
@@ -26,7 +25,14 @@ export default function MapPage() {
   const [selectedTypes, setSelectedTypes] = useState<Set<ObjectType>>(new Set());
 
   useEffect(() => {
-    setUserEntries(loadLibrary());
+    (async () => {
+      try {
+        const res = await fetch("/api/library");
+        if (!res.ok) return;
+        const { entries } = await res.json();
+        setUserEntries(entries ?? []);
+      } catch {/* ignore */}
+    })();
   }, []);
 
   const allEntries = useMemo(() => {

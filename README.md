@@ -20,24 +20,33 @@ npm run dev
 
 ## Vercel へのデプロイ
 
-1. このリポジトリを GitHub にプッシュ
-2. [vercel.com](https://vercel.com) で New Project → GitHub リポジトリを選択
-3. Framework Preset: Next.js (自動検出)
-4. Environment Variables (任意):
-   - `ANTHROPIC_API_KEY` — 設定すれば訪問者がキー未登録でもホストのキーで動く。公開デプロイでは**設定しない**ことを推奨 (訪問者が自分のキーを使う)
-5. Deploy
+### 1. プロジェクトをインポート
+1. [vercel.com/new](https://vercel.com/new) で GitHub リポジトリを選択
+2. Framework Preset: Next.js (自動検出)、そのまま Deploy
 
-デフォルトで Vercel Hobby (無料) で動きます。関数タイムアウトは 60 秒。
+### 2. Upstash Redis を追加 (共有ライブラリ必須)
+1. Vercel プロジェクト → **Storage** タブ → **Create Database**
+2. **Upstash Redis** を選択、無料プラン (256MB, 500k req/day) で OK
+3. リージョンを選んで Create
+4. 自動で環境変数が設定される:
+   - `KV_REST_API_URL` (または `UPSTASH_REDIS_REST_URL`)
+   - `KV_REST_API_TOKEN` (または `UPSTASH_REDIS_REST_TOKEN`)
+5. **再デプロイ** で反映 (Deployments → 最新の "..." メニューから Redeploy)
+
+### 3. APIキー (任意)
+- **公開デプロイでは設定しない**ことを推奨 → 各訪問者が自分の Anthropic キーを持ち込む
+- 自分専用で使うなら `ANTHROPIC_API_KEY` を env に設定すると設定画面不要で動く
+
+Vercel Hobby 無料プランで動きます。関数タイムアウト 60 秒。
 
 ## データ保存
 
-すべてブラウザの localStorage に保存されます。サーバー側のファイル書込はありません。
+- **共有ライブラリ** (Upstash Redis): 全訪問者が同じ分析結果を見られる
+  - `morpho:entries:v1` — ハッシュ key = entry id, value = Entry JSON
+  - `morpho:analogies:v1` — 同様、履歴書キャッシュ
+- **APIキー** (ブラウザ localStorage): `morpho:apiKey:v1` — 個人の端末に保存
 
-- `morpho:library:v1` — ユーザーが分析した対象
-- `morpho:analogies:v1` — 履歴書キャッシュ
-- `morpho:apiKey:v1` — Anthropic API キー
-
-端末を変えるとデータは持ち越せません (export/import は未実装)。
+誰かが分析した対象はすぐ他の人のライブラリにも出ます。API コストは分析した人の財布から出ます (自分のキーを使うので)。
 
 ## スタック
 
