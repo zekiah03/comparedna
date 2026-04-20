@@ -6,7 +6,7 @@ import { SEED_ENTRIES } from "@/lib/seed-data";
 import { RadarFull } from "@/components/radar-chart";
 import { AXIS_META, METRIC_LABELS, TYPE_META } from "@/lib/types";
 import type { AxisKey, Entry, Metrics } from "@/lib/types";
-import { cn, cosineSimilarity, axesToVector } from "@/lib/utils";
+import { cn, axesSimilarity, axesToVector } from "@/lib/utils";
 import { ratioLabel } from "@/lib/format-metric";
 import type { CompareResult } from "@/lib/compare-schema";
 import { loadLibrary, authHeaders } from "@/lib/client-storage";
@@ -44,7 +44,7 @@ function CompareInner() {
 
   const similarity = useMemo(() => {
     if (!a || !b) return 0;
-    return cosineSimilarity(axesToVector(a.axes12), axesToVector(b.axes12));
+    return axesSimilarity(axesToVector(a.axes12), axesToVector(b.axes12));
   }, [a, b]);
 
   const diffByAxis = useMemo(() => {

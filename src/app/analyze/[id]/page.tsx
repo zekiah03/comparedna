@@ -15,7 +15,7 @@ import type {
   PressureAxisKey, OriginLayerKey, RelationshipKey,
   TimeRhythmKey, TabooAspirationKey, InternalKey, ConstraintKey,
 } from "@/lib/types";
-import { cn, cosineSimilarity, axesToVector } from "@/lib/utils";
+import { cn, axesSimilarity, axesToVector } from "@/lib/utils";
 import { formatMetric } from "@/lib/format-metric";
 import type { HumanProfile } from "@/lib/analogy-schema";
 import {
@@ -68,7 +68,7 @@ export default function AnalyzePage({ params }: { params: Promise<{ id: string }
         seen.add(e.id);
         return true;
       })
-      .map(e => ({ entry: e, score: cosineSimilarity(myVec, axesToVector(e.axes12)) }))
+      .map(e => ({ entry: e, score: axesSimilarity(myVec, axesToVector(e.axes12)) }))
       .sort((a, b) => b.score - a.score)
       .slice(0, 3);
   }, [entry, userEntries]);
@@ -164,7 +164,7 @@ export default function AnalyzePage({ params }: { params: Promise<{ id: string }
         <div className="flex items-end justify-between mb-4">
           <div>
             <h2 className="text-xl font-semibold mb-1">似てるTop 3</h2>
-            <p className="text-[12px] text-[var(--text-muted)]">12軸のコサイン類似度で計算</p>
+            <p className="text-[12px] text-[var(--text-muted)]">12軸の相関類似度 (Pearson) で計算</p>
           </div>
         </div>
         <div className="grid md:grid-cols-3 gap-4">
