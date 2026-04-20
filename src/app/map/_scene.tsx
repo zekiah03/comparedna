@@ -35,10 +35,10 @@ export default function Scene({ entries, onHover, onSelect, hoveredId, autoRotat
     const vecs = entries.map(e => axesToVector(e.axes12));
     const { positions: raw } = pca3D(vecs);
 
-    // Find max abs value across all coords to scale uniformly
+    // Find max abs value across all coords to scale uniformly (wider spread)
     let maxAbs = 0;
     for (const p of raw) for (const c of p) maxAbs = Math.max(maxAbs, Math.abs(c));
-    const scale = maxAbs > 0 ? 3 / maxAbs : 1;
+    const scale = maxAbs > 0 ? 5.5 / maxAbs : 1;
     const scaled = raw.map(p => p.map(c => c * scale) as [number, number, number]);
 
     // Compute similarity edges (Pearson > 0.6)
@@ -55,7 +55,7 @@ export default function Scene({ entries, onHover, onSelect, hoveredId, autoRotat
 
   return (
     <Canvas
-      camera={{ position: [0, 1.2, 8], fov: 50 }}
+      camera={{ position: [0, 2, 14], fov: 55 }}
       dpr={[1, 2]}
       gl={{ antialias: true }}
     >
@@ -68,11 +68,11 @@ export default function Scene({ entries, onHover, onSelect, hoveredId, autoRotat
 
       <OrbitControls
         autoRotate={autoRotate}
-        autoRotateSpeed={0.35}
+        autoRotateSpeed={1.6}
         enableZoom
         enablePan={false}
-        minDistance={3}
-        maxDistance={18}
+        minDistance={4}
+        maxDistance={28}
       />
 
       {/* Origin helper (subtle) */}
@@ -113,31 +113,49 @@ function EntryNode({
 
   const a = entry.axes12;
   const size = 0.08 + 0.055 * a.H;                        // 重力
-  const emissiveIntensity = 0.4 + 0.12 * a.B;             // エネルギー
-  const pulseSpeed = 0.35 + 0.2 * (a.J / 10);             // 流動性
-  const pulseAmp = 0.05 + 0.05 * (a.J / 10);
+  // 発光は差を大きく: B=0 → 0.15, B=10 → 2.95
+  const emissiveIntensity = 0.15 + 0.28 * a.B;
+  // 脈動は差を大きく: J=0 → 0.4rad/s, J=10 → 2.0rad/s (5倍差)
+  const pulseSpeed = 0.4 + 0.16 * a.J;
+  // 脈動振幅も差を広げる: J=0 → ±8%, J=10 → ±28%
+  const pulseAmp = 0.08 + 0.02 * a.J;
+  // 浮遊のオフセット: 軸ごとに個別の位相で ふわっと動く
+  const bobSeed = position[0] * 3.1 + position[1] * 1.7 + position[2] * 2.3;
   const hue = TYPE_HUE[entry.type] ?? 180;
 
   const color = useMemo(() => new THREE.Color().setHSL(hue / 360, 0.65, 0.58), [hue]);
+  const groupRef = useRef<THREE.Group>(null);
 
   useFrame((state) => {
     const t = state.clock.elapsedTime;
     if (meshRef.current) {
-      const pulse = 1 + Math.sin(t * pulseSpeed + position[0]) * pulseAmp;
+      const pulse = 1 + Math.sin(t * pulseSpeed + bobSeed) * pulseAmp;
       meshRef.current.scale.setScalar(isHovered ? 2.2 : pulse);
     }
     if (glowRef.current) {
-      const glowPulse = 1 + Math.sin(t * pulseSpeed * 0.5 + position[1]) * 0.15;
+      // グローは本体と異なる周期で重なり合う
+      const glowPulse = 1 + Math.sin(t * pulseSpeed * 0.55 + bobSeed * 1.3) * (0.18 + 0.025 * a.J);
       glowRef.current.scale.setScalar(isHovered ? 3.5 : glowPulse * 1.8);
+    }
+    if (groupRef.current) {
+      // 浮遊: 各ノードが微妙に漂う (流動性ほど大きく)
+      const bobAmp = 0.04 + 0.02 * (a.J / 10);
+      const bobX = Math.sin(t * 0.6 + bobSeed) * bobAmp;
+      const bobY = Math.cos(t * 0.5 + bobSeed * 1.4) * bobAmp;
+      const bobZ = Math.sin(t * 0.7 + bobSeed * 0.8) * bobAmp;
+      groupRef.current.position.set(position[0] + bobX, position[1] + bobY, position[2] + bobZ);
     }
   });
 
+  // グロー透明度も B に応じて変化 (発光が強いほど halo も濃い)
+  const glowOpacity = isHovered ? 0.32 : 0.04 + 0.03 * a.B;
+
   return (
-    <group position={position}>
+    <group ref={groupRef} position={position}>
       {/* Glow halo */}
       <mesh ref={glowRef}>
         <sphereGeometry args={[size, 16, 16]} />
-        <meshBasicMaterial color={color} transparent opacity={isHovered ? 0.25 : 0.08} />
+        <meshBasicMaterial color={color} transparent opacity={glowOpacity} />
       </mesh>
       {/* Main body */}
       <mesh
