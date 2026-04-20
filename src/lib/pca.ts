@@ -89,3 +89,23 @@ export function pca2D(vecs: Vec[]): { positions: [number, number][]; explained: 
   const positions = centered.map(v => [dot(v, pc1.vec), dot(v, pc2.vec)] as [number, number]);
   return { positions, explained: [pc1.eig, pc2.eig] };
 }
+
+export function pca3D(vecs: Vec[]): { positions: [number, number, number][]; explained: [number, number, number] } {
+  if (vecs.length === 0) return { positions: [], explained: [0, 0, 0] };
+  if (vecs.length === 1) return { positions: [[0, 0, 0]], explained: [0, 0, 0] };
+
+  const centered = center(vecs);
+  const cov = covariance(centered);
+  const pc1 = powerIterate(cov);
+  const d1 = deflate(cov, pc1.vec, pc1.eig);
+  const pc2 = powerIterate(d1);
+  const d2 = deflate(d1, pc2.vec, pc2.eig);
+  const pc3 = powerIterate(d2);
+
+  const positions = centered.map(v => [
+    dot(v, pc1.vec),
+    dot(v, pc2.vec),
+    dot(v, pc3.vec),
+  ] as [number, number, number]);
+  return { positions, explained: [pc1.eig, pc2.eig, pc3.eig] };
+}
