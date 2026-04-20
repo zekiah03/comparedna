@@ -146,12 +146,19 @@ body {
   background: var(--bg-surface);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
-  padding: 12px 16px;
+  padding: 8px 16px;
   color: var(--text-primary);
   font-size: 14px;
+  line-height: 1.35;
   transition: all 160ms ease;
   width: 100%;
   outline: none;
+}
+/* <select> の native rendering は垂直中心が取れない環境があるので追加保険 */
+select.input-field {
+  line-height: 1.2;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 .input-field:focus {
   border-color: var(--accent-teal);
