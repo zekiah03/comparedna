@@ -222,6 +222,22 @@ select.input-field {
   background: linear-gradient(to left, var(--bg-base), transparent);
 }
 
+/* Horizontal scroll container for nav on mobile.
+   Hides scrollbar, restricts gestures to horizontal only
+   so page vertical scrolling is not hijacked. */
+.nav-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+.nav-scroll::-webkit-scrollbar {
+  display: none;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
