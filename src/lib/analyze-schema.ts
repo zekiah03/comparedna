@@ -10,18 +10,23 @@ export const AnalyzeCoreSchema = z.object({
   summary: z.string().describe("2-3文の要約。その対象が何であり、なぜそうなっているかを温かく語る。"),
 
   axes12: z.object({
-    A: axisScore.describe("構造: ハードウェア構成/部位の複雑さ"),
-    B: axisScore.describe("エネルギー: 燃料変換効率・熱"),
-    C: axisScore.describe("入出力: 吸気排気/摂取排出の強さ"),
-    D: axisScore.describe("制御: 意思決定/自律性"),
-    E: axisScore.describe("健康・耐久: 壊れにくさ"),
-    F: axisScore.describe("環境依存度: 外部条件への依存"),
-    G: axisScore.describe("相互作用: 他者との関わりの強度"),
-    H: axisScore.describe("重力(魅力): 他を引きつける力"),
-    I: axisScore.describe("排除(免疫): 異物を拒む力"),
-    J: axisScore.describe("流動性: 情報/人/血液の流れ"),
-    K: axisScore.describe("プライド: 自己イメージと実態の差"),
-    L: axisScore.describe("死との距離: 今どれくらい死に近いか(0=今すぐ死ぬ、10=ほぼ不滅)"),
+    // Cluster I 物質次元
+    A: axisScore.describe("構造[物質I]: 部位・要素の数と結合の複雑さ"),
+    B: axisScore.describe("エネルギー[物質I]: 単位時間あたりのエネルギー変換強度"),
+    C: axisScore.describe("入出力[物質I]: 物質・情報の摂取/排出の強度と速度"),
+    // Cluster II 情報次元
+    D: axisScore.describe("制御[情報II]: 自律的意思決定の精度・深さ"),
+    E: axisScore.describe("健康[情報II]: ノイズ・攻撃・劣化への耐性"),
+    F: axisScore.describe("環境依存[情報II]: 外部条件への依存度(0=独立,10=完全依存)"),
+    // Cluster III 関係次元
+    G: axisScore.describe("相互作用[関係III]: 他者と接触する頻度と強度"),
+    H: axisScore.describe("重力[関係III]: 他を引きつける力・影響の磁場"),
+    I: axisScore.describe("排除[関係III]: 異物を拒絶する力・境界の固さ"),
+    // Cluster IV 時間次元
+    J: axisScore.describe("流動性[時間IV]: 内部の情報・構成員の流れの速さ"),
+    K: axisScore.describe("プライド[時間IV]: 自己イメージと実態のズレ(自己モデルの歪み)"),
+    L: axisScore.describe("死との距離[時間IV]: 消滅への抵抗力(0=今すぐ死滅,10=ほぼ不滅)"),
+    M: axisScore.describe("複製力[時間IV]: 自己パターンを他に転写・伝播する能力(0=複製不可,10=完全複製/T7は10固定)"),
   }),
 
   origin: z.string().describe("由来: なぜそうなったか、時代・先祖・舞台・転機・代償などを2-3文で物語的に."),
@@ -68,6 +73,7 @@ export const EnvDNASchema = z.object({
     J: z.string(),
     K: z.string(),
     L: z.string(),
+    M: z.string(),
   }),
   pressure_axes: z.object({
     resource:      axisScore,

@@ -1,34 +1,64 @@
-export type AxisKey = "A"|"B"|"C"|"D"|"E"|"F"|"G"|"H"|"I"|"J"|"K"|"L";
+export type AxisKey = "A"|"B"|"C"|"D"|"E"|"F"|"G"|"H"|"I"|"J"|"K"|"L"|"M";
 
-export const AXIS_META: Record<AxisKey, { label: string; desc: string }> = {
-  A: { label: "構造",       desc: "ハードウェア構成・部位" },
-  B: { label: "エネルギー", desc: "燃料・変換効率・熱" },
-  C: { label: "入出力",     desc: "吸気/排気・摂取/排出" },
-  D: { label: "制御",       desc: "意思決定・ECU・OS" },
-  E: { label: "健康",       desc: "耐久・故障率・劣化" },
-  F: { label: "環境依存",   desc: "外部条件への依存度" },
-  G: { label: "相互作用",   desc: "他者と関わる強度" },
-  H: { label: "重力",       desc: "引きつける力・魅力" },
-  I: { label: "排除",       desc: "異物免疫・拒絶" },
-  J: { label: "流動性",     desc: "情報・人・血液の流れ" },
-  K: { label: "プライド",   desc: "見せかけ・自己イメージ" },
-  L: { label: "死との距離", desc: "寿命の残り/死生観" },
+// 軸は4クラスターで構成される (形態場理論 v2.0)
+// Cluster I  物質次元 (A, B, C): それは何からできているか
+// Cluster II 情報次元 (D, E, F): どう判断・適応するか
+// Cluster III 関係次元 (G, H, I): 他とどう結びつくか
+// Cluster IV 時間次元 (J, K, L, M): どう変化・複製・消滅するか
+export const AXIS_META: Record<AxisKey, { label: string; desc: string; cluster: "I"|"II"|"III"|"IV" }> = {
+  A: { label: "構造",       desc: "部位・要素の数と結合の複雑さ",               cluster: "I"   },
+  B: { label: "エネルギー", desc: "単位時間あたりのエネルギー変換強度",         cluster: "I"   },
+  C: { label: "入出力",     desc: "物質・情報の摂取/排出の強度と速度",          cluster: "I"   },
+  D: { label: "制御",       desc: "自律的意思決定の精度・深さ",                 cluster: "II"  },
+  E: { label: "健康",       desc: "ノイズ・攻撃・劣化への耐性",                 cluster: "II"  },
+  F: { label: "環境依存",   desc: "外部条件への依存度 (0=独立, 10=完全依存)",   cluster: "II"  },
+  G: { label: "相互作用",   desc: "他者と接触する頻度と強度",                   cluster: "III" },
+  H: { label: "重力",       desc: "他を引きつける力・影響の磁場",               cluster: "III" },
+  I: { label: "排除",       desc: "異物を拒絶する力・境界の固さ",               cluster: "III" },
+  J: { label: "流動性",     desc: "内部の情報・構成員の流れの速さ",             cluster: "IV"  },
+  K: { label: "プライド",   desc: "自己イメージと実態のズレ (自己モデルの歪み)", cluster: "IV"  },
+  L: { label: "死との距離", desc: "消滅への抵抗力 (0=今すぐ死滅, 10=ほぼ不滅)", cluster: "IV"  },
+  M: { label: "複製力",     desc: "自己パターンを他に転写・伝播する能力",       cluster: "IV"  },
 };
 
 export type ObjectType = "T1" | "T2" | "T3" | "T4" | "T5" | "T6" | "T7";
 
-export const TYPE_META: Record<ObjectType, { label: string; desc: string; color: "amber"|"teal"|"rose"|"violet" }> = {
-  T1: { label: "実体型",       desc: "物理的に独立して存在",             color: "teal" },
-  T2: { label: "集合型",       desc: "群れ・複数個体の総体",             color: "teal" },
-  T3: { label: "抽象型",       desc: "論理構造を持つ概念",               color: "violet" },
-  T4: { label: "事件型",       desc: "始まりと終わりのある出来事",       color: "rose" },
-  T5: { label: "現象型",       desc: "一過性の自然/知覚現象",           color: "rose" },
-  T6: { label: "状態型",       desc: "宿主の中に宿る感情・条件",         color: "amber" },
-  T7: { label: "永続抽象型",   desc: "永遠に真な数学的真理・法則",       color: "violet" },
+// 存在論的二分木による判定:
+// Q1 数学的必然か? → T7
+// Q2 宿主依存か?   → T6
+// Q3 時間有界か?   → T4(意志的), T5(自然的)
+// Q4 空間占有か?   → T1(単体), T2(集合体), No→T3
+export const TYPE_META: Record<ObjectType, { label: string; desc: string; color: "amber"|"teal"|"rose"|"violet"; treeDepth: number }> = {
+  T1: { label: "実体型",     desc: "物理空間を占有する単一の独立した存在",           color: "teal",   treeDepth: 4 },
+  T2: { label: "集合型",     desc: "複数の独立個体が成す総体・群れ・組織",           color: "teal",   treeDepth: 4 },
+  T3: { label: "抽象型",     desc: "物理空間を占有しない持続的な概念・体系",         color: "violet", treeDepth: 3 },
+  T4: { label: "事件型",     desc: "意志・行為によって生じる時間有界の出来事",       color: "rose",   treeDepth: 3 },
+  T5: { label: "現象型",     desc: "自然・物理プロセスが生む時間有界の現象",         color: "rose",   treeDepth: 3 },
+  T6: { label: "状態型",     desc: "宿主の内部にのみ存在する感情・条件・経験",       color: "amber",  treeDepth: 2 },
+  T7: { label: "永続抽象型", desc: "数学的・論理的に必然であり反証不可能な真理",     color: "violet", treeDepth: 1 },
+};
+
+// 型認識型形態距離のための TypeDist テーブル (存在論的二分木の分岐深さ)
+export const TYPE_DIST: Record<ObjectType, Record<ObjectType, number>> = {
+  T1: { T1:0, T2:1, T3:2, T4:3, T5:3, T6:4, T7:5 },
+  T2: { T1:1, T2:0, T3:2, T4:3, T5:3, T6:4, T7:5 },
+  T3: { T1:2, T2:2, T3:0, T4:3, T5:3, T6:4, T7:5 },
+  T4: { T1:3, T2:3, T3:3, T4:0, T5:1, T6:4, T7:5 },
+  T5: { T1:3, T2:3, T3:3, T4:1, T5:0, T6:4, T7:5 },
+  T6: { T1:4, T2:4, T3:4, T4:4, T5:4, T6:0, T7:5 },
+  T7: { T1:5, T2:5, T3:5, T4:5, T5:5, T6:5, T7:0 },
 };
 
 export type Axes12 = Record<AxisKey, number>;
 export type Axes12Rationale = Record<AxisKey, string>;
+
+// クラスター別の軸リスト
+export const AXIS_CLUSTERS: Record<"I"|"II"|"III"|"IV", { label: string; keys: AxisKey[] }> = {
+  "I":   { label: "物質次元",   keys: ["A","B","C"] },
+  "II":  { label: "情報次元",   keys: ["D","E","F"] },
+  "III": { label: "関係次元",   keys: ["G","H","I"] },
+  "IV":  { label: "時間次元",   keys: ["J","K","L","M"] },
+};
 
 // ---- 60要素フルバージョン (環境DNA 深層分析) ----
 

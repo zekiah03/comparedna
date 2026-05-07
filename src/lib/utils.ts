@@ -48,5 +48,48 @@ export function axesSimilarity(a: number[], b: number[]): number {
 }
 
 export function axesToVector(axes: Record<string, number>): number[] {
-  return ["A","B","C","D","E","F","G","H","I","J","K","L"].map(k => axes[k] ?? 0);
+  return ["A","B","C","D","E","F","G","H","I","J","K","L","M"].map(k => axes[k] ?? 0);
+}
+
+// 型認識型形態距離 (形態場理論 v2.0)
+// 4クラスター重み付き軸距離 + 存在論的型ペナルティ
+// クラスター重み: I(物質)=1.5, II(情報)=1.2, III(関係)=1.0, IV(時間)=0.8
+// 型ペナルティ重み: TYPE_DIST値 × 5
+import type { ObjectType } from "./types";
+import { TYPE_DIST } from "./types";
+
+const CLUSTER_WEIGHTS: Record<string, number> = {
+  A: 1.5, B: 1.5, C: 1.5,  // Cluster I 物質
+  D: 1.2, E: 1.2, F: 1.2,  // Cluster II 情報
+  G: 1.0, H: 1.0, I: 1.0,  // Cluster III 関係
+  J: 0.8, K: 0.8, L: 0.8, M: 0.8,  // Cluster IV 時間
+};
+const AXIS_ORDER = ["A","B","C","D","E","F","G","H","I","J","K","L","M"] as const;
+const TYPE_DIST_WEIGHT = 5;
+
+export function morphoDist(
+  axesA: Record<string, number>,
+  typeA: ObjectType,
+  axesB: Record<string, number>,
+  typeB: ObjectType,
+): number {
+  let weightedSq = 0;
+  for (const k of AXIS_ORDER) {
+    const diff = (axesA[k] ?? 0) - (axesB[k] ?? 0);
+    weightedSq += CLUSTER_WEIGHTS[k] * diff * diff;
+  }
+  const typePenalty = TYPE_DIST[typeA][typeB] * TYPE_DIST_WEIGHT;
+  return Math.sqrt(weightedSq + typePenalty * typePenalty);
+}
+
+// 形態距離を 0..1 の類似度に変換 (参考値)
+// 最大距離を約 130 と仮定 (全軸差10 + 最大型距離5×5)
+export function morphoSimilarity(
+  axesA: Record<string, number>,
+  typeA: ObjectType,
+  axesB: Record<string, number>,
+  typeB: ObjectType,
+): number {
+  const dist = morphoDist(axesA, typeA, axesB, typeB);
+  return Math.max(0, 1 - dist / 130);
 }
