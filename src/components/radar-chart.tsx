@@ -18,7 +18,7 @@ function useMounted() {
   return m;
 }
 
-const AXIS_ORDER: AxisKey[] = ["A","B","C","D","E","F","G","H","I","J","K","L"];
+const AXIS_ORDER: AxisKey[] = ["A","B","C","D","E","F","G","H","I","J","K","L","M"];
 
 export function RadarFull({ axes, overlayAxes, color = "#5EEAD4", overlayColor = "#F5B454" }: {
   axes: Axes12;

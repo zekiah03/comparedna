@@ -77,7 +77,7 @@ export default function MapPage() {
             <h1 className="text-[15px] font-semibold">星座ビュー</h1>
           </div>
           <p className="text-[11px] text-[var(--text-muted)] leading-relaxed mb-3">
-            12軸空間を3次元にPCA射影。対象は球として空間に浮かび、似ているほど近く、Pearson類似度 &gt; 0.6 は線で繋がる。
+            13軸形態場を3次元にPCA射影。対象は球として空間に浮かび、似ているほど近く、Pearson類似度 &gt; 0.6 は線で繋がる。
           </p>
           <div className="flex flex-wrap gap-1.5">
             {(Object.keys(TYPE_META) as ObjectType[]).map(t => {
@@ -114,7 +114,7 @@ export default function MapPage() {
           視覚化の凡例
         </div>
         <ul className="space-y-1 text-[11px] text-[var(--text-secondary)] leading-relaxed">
-          <LegendRow icon="◎" label="位置 (xyz)" value="12軸PCAの上位3主成分" />
+          <LegendRow icon="◎" label="位置 (xyz)" value="13軸PCAの上位3主成分" />
           <LegendRow icon="●" label="色" value="対象タイプ (T1〜T7)" />
           <LegendRow icon="⬤" label="サイズ" value="軸H · 重力(影響力)" />
           <LegendRow icon="✧" label="発光" value="軸B · エネルギー" />

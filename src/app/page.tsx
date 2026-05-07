@@ -66,7 +66,7 @@ export default function Home() {
       <section className="max-w-4xl mx-auto px-6 pt-24 pb-20 text-center animate-fade-in">
         <div className="inline-flex items-center gap-2 badge badge-teal mb-8">
           <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-teal)] animate-pulse" />
-          12軸 × 60要素 × 7層
+          13軸 × 60要素 × 7層
         </div>
 
         <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-3 bg-gradient-to-br from-[var(--text-primary)] via-[var(--text-primary)] to-[var(--text-secondary)] bg-clip-text text-transparent">
@@ -78,7 +78,7 @@ export default function Home() {
         </p>
 
         <p className="text-[15px] md:text-[17px] text-[var(--text-secondary)] max-w-2xl mx-auto mb-12 leading-relaxed">
-          あらゆる対象を12軸と環境DNAで解剖し、<br />
+          あらゆる対象を13軸と環境DNAで解剖し、<br />
           ジャンルを越えた類似を炙り出すAI分類学。
         </p>
 

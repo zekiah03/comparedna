@@ -69,7 +69,7 @@ export default function RankingsPage() {
       <header className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight mb-2">ランキング</h1>
         <p className="text-[14px] text-[var(--text-muted)]">
-          数値プロファイル or 12軸スコアで並べ替えて、最大・最小を一気に見る。
+          数値プロファイル or 13軸スコアで並べ替えて、最大・最小を一気に見る。
         </p>
       </header>
 
@@ -99,7 +99,7 @@ export default function RankingsPage() {
 
         {/* Axes buttons */}
         <div className="mb-4">
-          <div className="text-[11px] text-[var(--text-muted)] mb-2">12軸スコア</div>
+          <div className="text-[11px] text-[var(--text-muted)] mb-2">13軸スコア</div>
           <div className="flex flex-wrap gap-1.5">
             {AXIS_KEYS.map(k => (
               <button

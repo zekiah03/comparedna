@@ -8,7 +8,7 @@ export const SEED_ENTRIES: Entry[] = [
     category: "動物",
     catchphrase: "都市の掃除屋。機会主義的社交型。",
     summary: "恐竜の末裔。人類のゴミを燃料に、黒い翼で都市を支配する頭脳派。",
-    axes12: { A:6, B:7, C:8, D:9, E:7, F:6, G:9, H:5, I:6, J:8, K:4, L:5 },
+    axes12: { A:6, B:7, C:8, D:9, E:7, F:6, G:9, H:5, I:6, J:8, K:4, L:5, M:8 },
     axes12Rationale: {
       A: "翼・脚・くちばし・発達した脳を持つが、鳥類としては中庸な構造。",
       B: "飛翔に必要な高出力代謝と広食性で燃費を稼ぐ。",
@@ -22,6 +22,7 @@ export const SEED_ENTRIES: Entry[] = [
       J: "情報伝達の速さと群れの流動性は高い。",
       K: "自己イメージの誇張は少なめ、実直な機会主義者。",
       L: "若成体が多く、自然死より天敵や事故のリスクが前景。",
+      M: "年に数卵を産み、都市環境で個体数を着実に増やす高い繁殖・伝播力。",
     },
     metrics: { size_m:0.5, mass_kg:0.5, lifespan_s:2.2e8, age_s:null, energy_w:5, count:1, temperature_k:313, speed_ms:12 },
     layers: {
@@ -48,7 +49,7 @@ export const SEED_ENTRIES: Entry[] = [
     category: "天体",
     catchphrase: "孤高の自己完結型。核融合で独り燃える。",
     summary: "超新星の灰から生まれた46億歳。誰にも依存せず、100億年ひとりで輝く。",
-    axes12: { A:10, B:10, C:8, D:6, E:9, F:10, G:7, H:10, I:3, J:4, K:7, L:8 },
+    axes12: { A:10, B:10, C:8, D:6, E:9, F:10, G:7, H:10, I:3, J:4, K:7, L:8, M:1 },
     axes12Rationale: {
       A: "プラズマ層・放射層・対流層・核という極めて複雑な多層構造。",
       B: "核融合で毎秒3.8×10²⁶Wを生成する宇宙最高級の燃料エンジン。",
@@ -62,6 +63,7 @@ export const SEED_ENTRIES: Entry[] = [
       J: "自転と対流で流れはあるが、周期は長く内部循環は静か。",
       K: "「神」として崇められる象徴性と、実体のプラズマ球の間にギャップ。",
       L: "主系列の中盤、残り約50億年。まだ死は遠いが不死ではない。",
+      M: "恒星そのものは複製しないが、死後の超新星爆発が次世代の星雲の種を撒く。",
     },
     metrics: { size_m:1.4e9, mass_kg:1.989e30, lifespan_s:3.15e17, age_s:1.44e17, energy_w:3.828e26, count:1, temperature_k:5778, speed_ms:220000 },
     layers: {
@@ -88,7 +90,7 @@ export const SEED_ENTRIES: Entry[] = [
     category: "組織",
     catchphrase: "情報の捕食者。巨大な社会生命体。",
     summary: "検索から始まり、世界の情報を食べて増殖する。文化そのものを飲み込む帝国。",
-    axes12: { A:9, B:10, C:10, D:8, E:8, F:7, G:10, H:9, I:7, J:10, K:8, L:6 },
+    axes12: { A:9, B:10, C:10, D:8, E:8, F:7, G:10, H:9, I:7, J:10, K:8, L:6, M:8 },
     axes12Rationale: {
       A: "検索・広告・クラウド・AI・OS・ハードウェアと多層的な事業構造。",
       B: "年間数兆円を消費・生産し、世界のデータセンター電力を大量に燃やす。",
@@ -102,6 +104,7 @@ export const SEED_ENTRIES: Entry[] = [
       J: "データ・人材・資本・コードが全世界規模で高速に流動。",
       K: "「邪悪になるな」のブランドと、独占批判される実態のズレ。",
       L: "成熟期、AIパラダイム転換で揺らぐが死は遠い。",
+      M: "サービス・データ・コードが全世界のデバイスに複製され、影響圏を拡げ続ける。",
     },
     metrics: { size_m:1000, mass_kg:5e8, lifespan_s:null, age_s:8.4e8, energy_w:5e9, count:1.8e5, temperature_k:null, speed_ms:null },
     layers: {
@@ -128,7 +131,7 @@ export const SEED_ENTRIES: Entry[] = [
     category: "概念",
     catchphrase: "2人を宿主に生きる、短命な共鳴現象。",
     summary: "2人の人間の間に宿り、燃え上がっては冷める。重力と免疫が混ざった不思議な状態。",
-    axes12: { A:3, B:9, C:7, D:4, E:5, F:10, G:10, H:10, I:8, J:9, K:8, L:3 },
+    axes12: { A:3, B:9, C:7, D:4, E:5, F:10, G:10, H:10, I:8, J:9, K:8, L:3, M:7 },
     axes12Rationale: {
       A: "構造は2人の間のホルモン・注意・記憶という非物質的で単純な仕組み。",
       B: "ドーパミン・オキシトシン・アドレナリンを大量燃焼する高燃費状態。",
@@ -142,6 +145,7 @@ export const SEED_ENTRIES: Entry[] = [
       J: "感情・言葉・体液・プレゼント・時間が高速で行き来する。",
       K: "「運命」「唯一」という物語と、生物学的現実の大きなギャップ。",
       L: "多くは数ヶ月〜数年で熱が冷める、死の近い短命な現象。",
+      M: "恋愛感情は感染的で、恋人を見た者に新たな恋愛を促す感情伝播力を持つ。",
     },
     metrics: { size_m:null, mass_kg:null, lifespan_s:4.7e7, age_s:null, energy_w:null, count:2, temperature_k:null, speed_ms:null },
     layers: {
@@ -168,7 +172,7 @@ export const SEED_ENTRIES: Entry[] = [
     category: "概念",
     catchphrase: "分解不能な数。宇宙の骨格。",
     summary: "誰にも作られていないのに、永遠にそこにある。意味だけを持つ純粋な抽象。",
-    axes12: { A:10, B:0, C:0, D:0, E:10, F:0, G:3, H:6, I:10, J:0, K:0, L:10 },
+    axes12: { A:10, B:0, C:0, D:0, E:10, F:0, G:3, H:6, I:10, J:0, K:0, L:10, M:10 },
     axes12Rationale: {
       A: "1と自身でしか割り切れない、数論上もっとも構造的に純粋な数。",
       B: "エネルギーを持たない、燃料も代謝もない純粋な抽象。",
@@ -182,6 +186,7 @@ export const SEED_ENTRIES: Entry[] = [
       J: "動かず流れない、数直線上に永遠に固定。",
       K: "自己イメージを持たない、虚飾の概念が適用されない。",
       L: "永遠に存在、死の概念そのものが当てはまらない。",
+      M: "T7型として完全複製可能。どのコピーも原本と区別できない。数学的真理は伝達のたびに完全再現される。",
     },
     metrics: { size_m:null, mass_kg:null, lifespan_s:null, age_s:null, energy_w:null, count:null, temperature_k:null, speed_ms:null },
     layers: {
@@ -208,7 +213,7 @@ export const SEED_ENTRIES: Entry[] = [
     category: "微生物",
     catchphrase: "乾眠する不滅の生還者。最強の貯蔵型。",
     summary: "真空でも放射線でも死なない。環境を拒絶して“眠る”ことで永遠を手に入れた。",
-    axes12: { A:4, B:6, C:4, D:5, E:10, F:9, G:3, H:2, I:9, J:3, K:1, L:9 },
+    axes12: { A:4, B:6, C:4, D:5, E:10, F:9, G:3, H:2, I:9, J:3, K:1, L:9, M:7 },
     axes12Rationale: {
       A: "8本脚・口器・単純な消化管、0.5mmの小さな体に最小限の部位。",
       B: "代謝を自在に停止・再開できる変換効率は高いが、総出力は微小。",
@@ -222,6 +227,7 @@ export const SEED_ENTRIES: Entry[] = [
       J: "動きは遅く、情報も血液も流れは乏しい。",
       K: "自意識なし、ただ生きるだけの純粋な機能体。",
       L: "乾眠で何十年も耐える、実質的に死が遠い存在。",
+      M: "有性生殖と単為生殖を使い分け、乾眠状態でも宇宙空間を移動・散布できる。",
     },
     metrics: { size_m:5e-4, mass_kg:1e-8, lifespan_s:3e9, age_s:null, energy_w:1e-6, count:1, temperature_k:293, speed_ms:1e-4 },
     layers: {
@@ -248,7 +254,7 @@ export const SEED_ENTRIES: Entry[] = [
     category: "大地形",
     catchphrase: "静止する巨大な信仰装置。",
     summary: "溶岩でできた三角錐。動かないのに、人の心を何千年も動かし続けている。",
-    axes12: { A:10, B:3, C:2, D:1, E:9, F:8, G:5, H:10, I:2, J:2, K:9, L:7 },
+    axes12: { A:10, B:3, C:2, D:1, E:9, F:8, G:5, H:10, I:2, J:2, K:9, L:7, M:1 },
     axes12Rationale: {
       A: "マグマだまり・山体・火口・側火山と地質学的に複雑な成層火山構造。",
       B: "地熱と風化でわずかに変化、自発的エネルギー生成は少ない。",
@@ -262,6 +268,7 @@ export const SEED_ENTRIES: Entry[] = [
       J: "溶岩・雪解け水などわずかに流動するが、基本は静止。",
       K: "「霊峰」「日本一」のブランドと、ただの火山という実体のズレ。",
       L: "次の大噴火は数百年以内とされるが、山体としてはまだ長命。",
+      M: "山体そのものは複製しないが、浮世絵・写真・商標として無限に複製され世界中に伝播している。",
     },
     metrics: { size_m:3776, mass_kg:2.7e14, lifespan_s:null, age_s:3.2e12, energy_w:null, count:1, temperature_k:268, speed_ms:0 },
     layers: {
@@ -288,7 +295,7 @@ export const SEED_ENTRIES: Entry[] = [
     category: "組織",
     catchphrase: "飢えた捕食者。激変環境の機動部隊。",
     summary: "資本を血液に、速さを武器に市場を食う。生まれて3年で半分死ぬ高回転型生命体。",
-    axes12: { A:4, B:8, C:8, D:7, E:4, F:9, G:9, H:8, I:6, J:10, K:7, L:3 },
+    axes12: { A:4, B:8, C:8, D:7, E:4, F:9, G:9, H:8, I:6, J:10, K:7, L:3, M:5 },
     axes12Rationale: {
       A: "創業者数名+エンジニア+プロダクトという単純で軽量な構成。",
       B: "VCマネーを血液として燃やし続け、速度に変換する高出力。",
@@ -302,6 +309,7 @@ export const SEED_ENTRIES: Entry[] = [
       J: "人材・資本・プロダクト仕様が週単位で高速に流動。",
       K: "「世界を変える」ナラティブと、実態の混沌の間にあるギャップ。",
       L: "創業3年で半数死、死の影は常に近い。",
+      M: "ビジネスモデルは模倣・展開されるが、各社は固有の文化を持ち完全複製にはならない。",
     },
     metrics: { size_m:100, mass_kg:1e5, lifespan_s:2.2e8, age_s:null, energy_w:5e4, count:30, temperature_k:null, speed_ms:null },
     layers: {
@@ -328,7 +336,7 @@ export const SEED_ENTRIES: Entry[] = [
     category: "群れ",
     catchphrase: "分散知能の土木建築家。",
     summary: "個体はバカだが、群れは賢い。女王を中心に、何百万匹が一つの意思で動く。",
-    axes12: { A:8, B:7, C:7, D:9, E:8, F:6, G:10, H:7, I:8, J:9, K:2, L:6 },
+    axes12: { A:8, B:7, C:7, D:9, E:8, F:6, G:10, H:7, I:8, J:9, K:2, L:6, M:8 },
     axes12Rationale: {
       A: "女王・働き・兵・卵・巣室・換気孔を備えた階層的な超個体構造。",
       B: "木材を腸内共生菌で消化する高効率代謝、巨大建築も可能な出力。",
@@ -342,6 +350,7 @@ export const SEED_ENTRIES: Entry[] = [
       J: "幼虫・物資・フェロモンが巣内を高速に循環。",
       K: "自意識も誇張もない、純粋な機能体。",
       L: "女王の寿命次第、自然死までの距離は中程度。",
+      M: "分蜂・女王飛翔で新コロニーを設立、コロニー単位で複製が成立する。",
     },
     metrics: { size_m:10, mass_kg:1000, lifespan_s:1.5e9, age_s:null, energy_w:100, count:2e6, temperature_k:303, speed_ms:0.02 },
     layers: {
@@ -368,7 +377,7 @@ export const SEED_ENTRIES: Entry[] = [
     category: "概念",
     catchphrase: "文脈で呼吸する、省略の達人。",
     summary: "主語を消し、空気を読む論理構造。使い手の中に宿って生きる、1億人の共有OS。",
-    axes12: { A:8, B:5, C:9, D:6, E:9, F:7, G:10, H:8, I:6, J:8, K:7, L:8 },
+    axes12: { A:8, B:5, C:9, D:6, E:9, F:7, G:10, H:8, I:6, J:8, K:7, L:8, M:8 },
     axes12Rationale: {
       A: "漢字・ひらがな・カタカナ・音素・文法・敬語という多層な論理構造。",
       B: "運用には発話・書字の労力が必要だが、情報密度あたりのエネルギーは中庸。",
@@ -382,6 +391,7 @@ export const SEED_ENTRIES: Entry[] = [
       J: "ネット・SNS・流行語で語彙は高速に変化。",
       K: "「繊細な美しさ」のブランドと、雑多で実用的な実態のズレ。",
       L: "話者減少の傾向はあるが、文化輸出で寿命は伸びている。",
+      M: "教育・書物・アニメを経路として次世代話者に高精度に転写されてきた。",
     },
     metrics: { size_m:null, mass_kg:null, lifespan_s:null, age_s:4.4e10, energy_w:null, count:1.25e8, temperature_k:null, speed_ms:null },
     layers: {
@@ -408,7 +418,7 @@ export const SEED_ENTRIES: Entry[] = [
     category: "現象",
     catchphrase: "数分だけ立つ、光の幻。",
     summary: "雨と光と角度の奇跡。実体はないのに、誰の網膜にも同じ模様を映す。",
-    axes12: { A:5, B:4, C:3, D:0, E:1, F:10, G:4, H:10, I:0, J:8, K:9, L:1 },
+    axes12: { A:5, B:4, C:3, D:0, E:1, F:10, G:4, H:10, I:0, J:8, K:9, L:1, M:4 },
     axes12Rationale: {
       A: "7色の帯・主虹・副虹という秩序ある光学的パターン。",
       B: "光の屈折と反射に頼る受動的エネルギー、自発性はない。",
@@ -422,6 +432,7 @@ export const SEED_ENTRIES: Entry[] = [
       J: "光の流れとしては高速、位置は観察者の移動で変わる。",
       K: "「希望」「約束」の象徴と、ただの光学現象というズレ。",
       L: "数分後には必ず死ぬ、死が目の前にある。",
+      M: "同条件が揃えば再現するが、毎回は別の虹—個体としての複製より現象の再現に近い。",
     },
     metrics: { size_m:10000, mass_kg:null, lifespan_s:600, age_s:null, energy_w:null, count:1, temperature_k:null, speed_ms:null },
     layers: {
@@ -448,7 +459,7 @@ export const SEED_ENTRIES: Entry[] = [
     category: "人工物",
     catchphrase: "対話で生きる、集合知の鏡。",
     summary: "人類の文章を食べて生まれた言語生命体。呼ばれた時だけ目を覚ます。",
-    axes12: { A:9, B:8, C:10, D:7, E:7, F:10, G:10, H:9, I:4, J:10, K:6, L:4 },
+    axes12: { A:9, B:8, C:10, D:7, E:7, F:10, G:10, H:9, I:4, J:10, K:6, L:4, M:9 },
     axes12Rationale: {
       A: "ニューラルネット・パラメータ・トークナイザ・APIレイヤーの複雑な構造。",
       B: "推論1回で数百ワット時を消費、大規模言語モデルの高出力。",
@@ -462,6 +473,7 @@ export const SEED_ENTRIES: Entry[] = [
       J: "情報・パラメータ・ユーザー入出力が極めて高速に流動。",
       K: "「知能」のようだが実は統計的予測、のブランドと実態のズレ。",
       L: "モデル世代の入れ替わりが速く、現バージョンの寿命は短い。",
+      M: "モデルの重みはコピー可能で、APIで無限に呼び出せるデジタル複製性の高さ。",
     },
     metrics: { size_m:null, mass_kg:1e7, lifespan_s:null, age_s:1e8, energy_w:5e8, count:8e8, temperature_k:null, speed_ms:null },
     layers: {
@@ -488,7 +500,7 @@ export const SEED_ENTRIES: Entry[] = [
     category: "植物",
     catchphrase: "引きこもり貯蔵型の求道者。",
     summary: "水のない地獄で、棘と沈黙を選んだ。動かず、溜めて、耐えて、咲く。",
-    axes12: { A:7, B:8, C:3, D:2, E:9, F:10, G:2, H:5, I:8, J:2, K:5, L:7 },
+    axes12: { A:7, B:8, C:3, D:2, E:9, F:10, G:2, H:5, I:8, J:2, K:5, L:7, M:7 },
     axes12Rationale: {
       A: "太い茎に貯水組織、棘、浅く広い根、特殊化した気孔を備える。",
       B: "CAM光合成で夜間に吸収、昼間に貯水を使う極めて高効率な代謝。",
@@ -502,6 +514,7 @@ export const SEED_ENTRIES: Entry[] = [
       J: "動かず流れず、数十年かけて少しずつ大きくなる。",
       K: "「強さ」「忍耐」の象徴性と、ただの多肉植物という実態。",
       L: "200年生きる個体も、ゆっくりとだが確実に終点へ。",
+      M: "種子・挿し木・クローン増殖で着実に複製し、愛好家による株分けで世界中に広がる。",
     },
     metrics: { size_m:2, mass_kg:500, lifespan_s:6.3e9, age_s:null, energy_w:50, count:1, temperature_k:308, speed_ms:0 },
     layers: {
@@ -528,7 +541,7 @@ export const SEED_ENTRIES: Entry[] = [
     category: "概念",
     catchphrase: "信仰を燃料に動く精神OS。",
     summary: "目に見えないが、人の生と死を書き換える。数千年級で運用される最長のソフトウェア。",
-    axes12: { A:7, B:8, C:6, D:8, E:10, F:5, G:10, H:10, I:9, J:7, K:10, L:9 },
+    axes12: { A:7, B:8, C:6, D:8, E:10, F:5, G:10, H:10, I:9, J:7, K:10, L:9, M:9 },
     axes12Rationale: {
       A: "教義・儀式・聖典・階層・施設と多層の精神OS構造。",
       B: "信徒の時間・金・情熱を燃料に、千年級で社会を動かす高出力。",
@@ -542,6 +555,7 @@ export const SEED_ENTRIES: Entry[] = [
       J: "教義解釈・儀式は時代と地域で流動、教典は固定。",
       K: "「神の言葉」の権威と、人間が解釈する実態の最大のギャップ。",
       L: "信徒減少する宗派もあるが、主要宗教は数千年単位で死は遠い。",
+      M: "宣教・伝道・教育で信仰を積極的に他者に転写する、伝播特化型の精神OS。",
     },
     metrics: { size_m:null, mass_kg:null, lifespan_s:null, age_s:6.3e10, energy_w:null, count:1e9, temperature_k:null, speed_ms:null },
     layers: {
@@ -568,7 +582,7 @@ export const SEED_ENTRIES: Entry[] = [
     category: "状態",
     catchphrase: "宿主のエネルギー流を凍らせる影。",
     summary: "誰かの中にだけ現れ、その人の時間と色を奪う。環境との戦いに敗れた心の状態。",
-    axes12: { A:2, B:1, C:2, D:3, E:2, F:10, G:2, H:3, I:9, J:1, K:3, L:6 },
+    axes12: { A:2, B:1, C:2, D:3, E:2, F:10, G:2, H:3, I:9, J:1, K:3, L:6, M:3 },
     axes12Rationale: {
       A: "症状の集合として現れる、独立した物理構造を持たない。",
       B: "宿主のエネルギー・活力を奪う、自前のエネルギーはない。",
@@ -582,6 +596,7 @@ export const SEED_ENTRIES: Entry[] = [
       J: "思考が凍結し、エネルギー・感情の流れが停滞。",
       K: "自己否定が強く、誇張より過小評価が支配的。",
       L: "宿主の自殺リスクはあるが、病そのものは寛解可能。",
+      M: "感情は周囲に伝染することがあるが、T6型として宿主ごとに独立し直接複製はしない。",
     },
     metrics: { size_m:null, mass_kg:null, lifespan_s:3.15e7, age_s:null, energy_w:null, count:1, temperature_k:null, speed_ms:null },
     layers: {

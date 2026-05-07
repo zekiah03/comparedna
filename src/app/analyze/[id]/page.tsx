@@ -6,7 +6,7 @@ import { notFound, useRouter } from "next/navigation";
 import { SEED_ENTRIES } from "@/lib/seed-data";
 import { RadarFull } from "@/components/radar-chart";
 import {
-  TYPE_META, AXIS_META, METRIC_LABELS,
+  TYPE_META, AXIS_META, AXIS_CLUSTERS, METRIC_LABELS,
   PRESSURE_AXIS_META, ORIGIN_LAYER_META, RELATIONSHIP_META,
   TIME_RHYTHM_META, TABOO_META, INTERNAL_META, CONSTRAINT_META,
 } from "@/lib/types";
@@ -20,7 +20,7 @@ import { formatMetric } from "@/lib/format-metric";
 import type { HumanProfile } from "@/lib/analogy-schema";
 import { authHeaders } from "@/lib/client-storage";
 
-const AXIS_ORDER: AxisKey[] = ["A","B","C","D","E","F","G","H","I","J","K","L"];
+const AXIS_ORDER: AxisKey[] = ["A","B","C","D","E","F","G","H","I","J","K","L","M"];
 
 const LAYER_META = [
   { key: "origin",       label: "由来",          desc: "なぜそうなったか — 環境DNA" },
@@ -173,7 +173,7 @@ export default function AnalyzePage({ params }: { params: Promise<{ id: string }
         <div className="flex items-end justify-between mb-4">
           <div>
             <h2 className="text-xl font-semibold mb-1">似てるTop 3</h2>
-            <p className="text-[12px] text-[var(--text-muted)]">12軸の相関類似度 (Pearson) で計算</p>
+            <p className="text-[12px] text-[var(--text-muted)]">13軸の形態的類似度 (Pearson) で計算</p>
           </div>
         </div>
         <div className="grid md:grid-cols-3 gap-4">
@@ -317,7 +317,7 @@ function EditModal({
         </div>
 
         <p className="text-[11px] text-[var(--text-dim)] mt-4 leading-relaxed">
-          名前・カテゴリ・キャッチ・要約のみ編集できます。12軸や7層を変えたい場合は「もしもラボ」を使ってください。
+          名前・カテゴリ・キャッチ・要約のみ編集できます。13軸や7層を変えたい場合は「もしもラボ」を使ってください。
         </p>
 
         {err && (
@@ -571,6 +571,8 @@ function EditField({ label, value, onChange, multiline }: {
   );
 }
 
+const CLUSTER_ORDER = ["I", "II", "III", "IV"] as const;
+
 function AxesCard({ entry }: { entry: Entry }) {
   const [showRationale, setShowRationale] = useState(false);
   const hasRationale = Boolean(entry.axes12Rationale);
@@ -578,52 +580,76 @@ function AxesCard({ entry }: { entry: Entry }) {
   return (
     <div className="card p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-[13px] uppercase tracking-wider text-[var(--text-dim)]">12軸プロファイル</h3>
+        <h3 className="text-[13px] uppercase tracking-wider text-[var(--text-dim)]">13軸プロファイル</h3>
         <span className="text-[11px] text-[var(--text-muted)]">0 → 10</span>
       </div>
       <RadarFull axes={entry.axes12} />
 
       <div className="mt-5 pt-5 border-t border-[var(--border-subtle)]">
         {!showRationale ? (
-          <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-            {AXIS_ORDER.map(k => (
-              <div key={k} className="flex items-center gap-2 text-[11.5px] py-0.5">
-                <span className="w-4 h-4 rounded-sm bg-[var(--bg-overlay)] flex items-center justify-center text-[9px] font-mono text-[var(--accent-teal)] flex-shrink-0">{k}</span>
-                <span className="text-[var(--text-muted)] truncate flex-1">{AXIS_META[k].label}</span>
-                <span className="font-mono text-[var(--text-secondary)]">{entry.axes12[k]}</span>
-              </div>
-            ))}
+          <div className="space-y-3">
+            {CLUSTER_ORDER.map(clusterKey => {
+              const cluster = AXIS_CLUSTERS[clusterKey];
+              return (
+                <div key={clusterKey}>
+                  <div className="text-[9px] font-mono uppercase tracking-widest text-[var(--text-dim)] mb-1 pl-1">
+                    {clusterKey} — {cluster.label}
+                  </div>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
+                    {cluster.keys.map(k => (
+                      <div key={k} className="flex items-center gap-2 text-[11.5px] py-0.5">
+                        <span className="w-4 h-4 rounded-sm bg-[var(--bg-overlay)] flex items-center justify-center text-[9px] font-mono text-[var(--accent-teal)] flex-shrink-0">{k}</span>
+                        <span className="text-[var(--text-muted)] truncate flex-1">{AXIS_META[k].label}</span>
+                        <span className="font-mono text-[var(--text-secondary)]">{entry.axes12[k] ?? "—"}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         ) : (
-          <div className="space-y-3">
-            {AXIS_ORDER.map(k => {
-              const v = entry.axes12[k];
-              const rationale = entry.axes12Rationale?.[k];
+          <div className="space-y-5">
+            {CLUSTER_ORDER.map(clusterKey => {
+              const cluster = AXIS_CLUSTERS[clusterKey];
               return (
-                <div key={k} className="group">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="w-5 h-5 rounded bg-[var(--bg-overlay)] flex items-center justify-center text-[10px] font-mono text-[var(--accent-teal)] flex-shrink-0">{k}</span>
-                    <span className="text-[12.5px] font-semibold text-[var(--text-primary)]">{AXIS_META[k].label}</span>
-                    <span className="flex-1 h-1 bg-[var(--bg-overlay)] rounded-full overflow-hidden">
-                      <span
-                        className="block h-full"
-                        style={{
-                          width: `${v * 10}%`,
-                          background: "linear-gradient(to right, var(--accent-teal), var(--accent-amber))",
-                        }}
-                      />
-                    </span>
-                    <span className="text-[11px] font-mono text-[var(--text-muted)] w-6 text-right">{v}</span>
+                <div key={clusterKey}>
+                  <div className="text-[9px] font-mono uppercase tracking-widest text-[var(--text-dim)] mb-2 pl-1 border-b border-[var(--border-subtle)] pb-1">
+                    {clusterKey} — {cluster.label}
                   </div>
-                  {rationale ? (
-                    <p className="text-[11.5px] text-[var(--text-secondary)] leading-[1.7] pl-7">
-                      {rationale}
-                    </p>
-                  ) : (
-                    <p className="text-[11px] text-[var(--text-dim)] leading-relaxed pl-7 italic">
-                      根拠テキストはこのエントリーにはありません (シードまたは旧形式)。
-                    </p>
-                  )}
+                  <div className="space-y-3">
+                    {cluster.keys.map(k => {
+                      const v = entry.axes12[k] ?? 0;
+                      const rationale = entry.axes12Rationale?.[k];
+                      return (
+                        <div key={k} className="group">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="w-5 h-5 rounded bg-[var(--bg-overlay)] flex items-center justify-center text-[10px] font-mono text-[var(--accent-teal)] flex-shrink-0">{k}</span>
+                            <span className="text-[12.5px] font-semibold text-[var(--text-primary)]">{AXIS_META[k].label}</span>
+                            <span className="flex-1 h-1 bg-[var(--bg-overlay)] rounded-full overflow-hidden">
+                              <span
+                                className="block h-full"
+                                style={{
+                                  width: `${v * 10}%`,
+                                  background: "linear-gradient(to right, var(--accent-teal), var(--accent-amber))",
+                                }}
+                              />
+                            </span>
+                            <span className="text-[11px] font-mono text-[var(--text-muted)] w-6 text-right">{v}</span>
+                          </div>
+                          {rationale ? (
+                            <p className="text-[11.5px] text-[var(--text-secondary)] leading-[1.7] pl-7">
+                              {rationale}
+                            </p>
+                          ) : (
+                            <p className="text-[11px] text-[var(--text-dim)] leading-relaxed pl-7 italic">
+                              根拠テキストはこのエントリーにはありません (シードまたは旧形式)。
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               );
             })}

@@ -11,7 +11,7 @@ import { ratioLabel } from "@/lib/format-metric";
 import type { CompareResult } from "@/lib/compare-schema";
 import { authHeaders } from "@/lib/client-storage";
 
-const AXIS_ORDER: AxisKey[] = ["A","B","C","D","E","F","G","H","I","J","K","L"];
+const AXIS_ORDER: AxisKey[] = ["A","B","C","D","E","F","G","H","I","J","K","L","M"];
 
 function CompareInner() {
   const params = useSearchParams();
@@ -111,7 +111,7 @@ function CompareInner() {
       <header className="mb-10">
         <h1 className="text-3xl font-bold tracking-tight mb-2">比較</h1>
         <p className="text-[14px] text-[var(--text-muted)]">
-          2つの対象を12軸で並べて、どこが似ていてどこが違うかを見る。
+          2つの対象を13軸で並べて、どこが似ていてどこが違うかを見る。
         </p>
       </header>
 
@@ -158,7 +158,7 @@ function CompareInner() {
         <div className="grid lg:grid-cols-2 gap-6">
           <div className="card p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[13px] uppercase tracking-wider text-[var(--text-dim)]">12軸オーバーレイ</h3>
+              <h3 className="text-[13px] uppercase tracking-wider text-[var(--text-dim)]">13軸オーバーレイ</h3>
               <div className="flex items-center gap-3 text-[11px]">
                 <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[var(--accent-teal)]" />{a.name}</span>
                 <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[var(--accent-amber)]" />{b.name}</span>
@@ -168,7 +168,7 @@ function CompareInner() {
           </div>
 
           <div className="card p-6">
-            <h3 className="text-[13px] uppercase tracking-wider text-[var(--text-dim)] mb-4">12軸の差分</h3>
+            <h3 className="text-[13px] uppercase tracking-wider text-[var(--text-dim)] mb-4">13軸の差分</h3>
             <div className="space-y-2">
               {diffByAxis.map(d => (
                 <div key={d.key} className="flex items-center gap-3 py-1">
